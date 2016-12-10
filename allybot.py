@@ -7,7 +7,7 @@ BOT_ID = os.environ.get("BOT_ID")
 
 # constants
 AT_BOT = "<@" + BOT_ID + ">"
-INTRO_COMMAND = "Intro"
+INTRO_COMMAND = "intro"
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
@@ -17,12 +17,10 @@ def handle_command(command, channel):
     
 
 
-
-
     response = "Not sure what you mean. Use the *" + INTRO_COMMAND + \
                "* command with numbers, delimited by spaces."
     if command.startswith(INTRO_COMMAND):
-        response = "Sure...write some more code then I can do that!"
+        response = ""
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
@@ -54,7 +52,4 @@ if __name__ == "__main__":
     else:
         print("Connection failed. Invalid Slack token or bot ID?")
 
-        #----------------------------------------------------#
- 		#---- Parse Slack output and handle commands ---------#
-        #----------------------------------------------------#
 
