@@ -12,6 +12,8 @@ INTRO_COMMAND = "intro"
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
+#def introduction_controlflow( )
+
 
 def handle_command(command, channel):
     
@@ -20,12 +22,16 @@ def handle_command(command, channel):
     response = "Not sure what you mean. Use the *" + INTRO_COMMAND + \
                "* command with numbers, delimited by spaces."
     if command.startswith(INTRO_COMMAND):
-        response = ""
+        response = ("Hello. Thank you for accessing allybot.Please enter: "
+        " \n `Who can I tweet?`         To reach out to know allies on twitter "
+        " \n `Get to know community`    To learn about well known community members"
+        " \n `I'm just starting`        To interact with bot about concepts and in allyship")
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
+
     """
         The Slack Real Time Messaging API is an events firehose.
         this parsing function returns None unless a message is
