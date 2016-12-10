@@ -10,10 +10,13 @@ returning an iterator generating tokens.
 
 from __future__ import absolute_import, division, unicode_literals
 
-from .. import constants
-from .._utils import default_etree
+__all__ = ["getTreeWalker", "pprint", "dom", "etree", "genshistream", "lxmletree",
+           "pulldom"]
 
-__all__ = ["getTreeWalker", "pprint", "dom", "etree", "genshi", "etree_lxml"]
+import sys
+
+from .. import constants
+from ..utils import default_etree
 
 treeWalkerCache = {}
 
@@ -21,33 +24,34 @@ treeWalkerCache = {}
 def getTreeWalker(treeType, implementation=None, **kwargs):
     """Get a TreeWalker class for various types of tree with built-in support
 
-    Args:
-        treeType (str): the name of the tree type required (case-insensitive).
-            Supported values are:
+    treeType - the name of the tree type required (case-insensitive). Supported
+               values are:
 
-            - "dom": The xml.dom.minidom DOM implementation
-            - "etree": A generic walker for tree implementations exposing an
-                       elementtree-like interface (known to work with
-                       ElementTree, cElementTree and lxml.etree).
-            - "lxml": Optimized walker for lxml.etree
-            - "genshi": a Genshi stream
+                "dom" - The xml.dom.minidom DOM implementation
+                "pulldom" - The xml.dom.pulldom event stream
+                "etree" - A generic walker for tree implementations exposing an
+                          elementtree-like interface (known to work with
+                          ElementTree, cElementTree and lxml.etree).
+                "lxml" - Optimized walker for lxml.etree
+                "genshi" - a Genshi stream
 
-        Implementation: A module implementing the tree type e.g.
-            xml.etree.ElementTree or cElementTree (Currently applies to the
-            "etree" tree type only).
-    """
+    implementation - (Currently applies to the "etree" tree type only). A module
+                      implementing the tree type e.g. xml.etree.ElementTree or
+                      cElementTree."""
 
     treeType = treeType.lower()
     if treeType not in treeWalkerCache:
-        if treeType == "dom":
-            from . import dom
-            treeWalkerCache[treeType] = dom.TreeWalker
+        if treeType in ("dom", "pulldom"):
+            name = "%s.%s" % (__name__, treeType)
+            __import__(name)
+            mod = sys.modules[name]
+            treeWalkerCache[treeType] = mod.TreeWalker
         elif treeType == "genshi":
-            from . import genshi
-            treeWalkerCache[treeType] = genshi.TreeWalker
+            from . import genshistream
+            treeWalkerCache[treeType] = genshistream.TreeWalker
         elif treeType == "lxml":
-            from . import etree_lxml
-            treeWalkerCache[treeType] = etree_lxml.TreeWalker
+            from . import lxmletree
+            treeWalkerCache[treeType] = lxmletree.TreeWalker
         elif treeType == "etree":
             from . import etree
             if implementation is None:
