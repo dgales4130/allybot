@@ -8,19 +8,30 @@ BOT_ID = os.environ.get("BOT_ID")
 # constants
 AT_BOT = "<@" + BOT_ID + ">"
 INTRO_COMMAND = "intro"
-introCommands = ['intro', 'Who can I tweet?', 'Get to know community', 'I\'m just starting']
+introCommands = ['intro', 'Who can I tweet?', 'Get to know community', 'ally portal']
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 
 def intro_command(command, channel):
 
+
     response = "Not sure what you mean. Use the *" + INTRO_COMMAND + \
                "* command with numbers, delimited by spaces."
-    if command.startswith(INTRO_COMMAND):
+
+    if command.startswith("ally portal"):
+        response=("Welcome. Now to learn allyship. This will: \n"
+        "1) Teach you some concepts and terms\n"
+        "2) Teach you how the 'contept and terms' can be translated in roles and responsibilities\n"
+
+
+
+    if command.startswith("intro"):
         response = ("Hello. Thank you for accessing Allybot! Please enter: "
         " \n `Who can I tweet?`         To reach out to know allies on twitter "
         " \n `Get to know community`    To learn about well known community members"
-        " \n `I'm just starting`        To interact with bot about concepts and in allyship")
+        " \n `Ally Portal`        To interact with bot about concepts and in allyship")
+
+
     slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
 
 
