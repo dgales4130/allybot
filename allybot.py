@@ -21,7 +21,7 @@ def intro_command(command, channel):
     if command.startswith("ally portal"):
         response=("Welcome. Now to learn allyship. This will: \n"
         "1) Teach you some concepts and terms\n"
-        "2) Teach you how the 'contept and terms' can be translated in roles and responsibilities\n"
+        "2) Teach you how the 'contept and terms' can be translated into 'roles and responsibilities'\n"
 
 
 
