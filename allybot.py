@@ -29,7 +29,7 @@ def intro_command(command, channel):
         response = ("Hello. Thank you for accessing Allybot! Please enter: "
         " \n `Who can I tweet?`         To reach out to know allies on twitter "
         " \n `Get to know community`    To learn about well known community members"
-        " \n `Ally Portal`        To interact with bot about concepts and in allyship")
+        " \n `Ally Portal`        To talk to me about some concepts and terms related to allyship")
 
 
     slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
